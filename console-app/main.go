@@ -38,20 +38,21 @@ func main() {
 	fmt.Println("6 - Espresso")
 	fmt.Println("Q - Quit the program")
 
-	fmt.Println(("Press any key in the keyboard. Press ESC to quit"))
-	for {
+	fmt.Println(("Press any key in the keyboard. Press q to quit"))
+	char := ' '
+	for char != 'q' && char != 'Q' {
 
-		char, _, err := keyboard.GetSingleKey()
+		char, _, err = keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)
 		}
-		if char == 'q' || char == 'Q' {
-			break
-		}
-		i, _ := strconv.Atoi(string(char))
-		t := fmt.Sprintf("You chose %s", coffees[i])
 
-		fmt.Println(t)
+		i, _ := strconv.Atoi(string(char))
+		el, ok := coffees[i]
+		if ok {
+			t := fmt.Sprintf("You chose %s", el)
+			fmt.Println(t)
+		}
 
 	}
 
