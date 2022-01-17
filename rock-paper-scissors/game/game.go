@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	ROCK     = 0
-	PAPER    = 1
-	SCISSORS = 2
+	ROCK     = 0 // beats scissor. (scissors + 1)%3 = 0
+	PAPER    = 1 // beats rock, (rock + 1)%3 = 1
+	SCISSORS = 2 // beat paper (paper +1 )%3 = 2
 )
 
 type Game struct {
@@ -115,33 +115,43 @@ Round %d
 		g.DisplayChan <- "It's  a draw"
 		<-g.DisplayChan
 		return false
+	} else if playerValue == -1 {
+		g.DisplayChan <- "Invalid choise"
+		<-g.DisplayChan
+		return false
+	} else if playerValue == (computerValue+1)%3 {
+		g.playerWins()
 	} else {
-		switch playerValue {
-		case ROCK:
-			if computerValue == PAPER {
-				g.computerWins()
-			} else {
-				g.playerWins()
-			}
-		case PAPER:
-			if computerValue == SCISSORS {
-				g.computerWins()
-			} else {
-				g.playerWins()
-			}
-		case SCISSORS:
-			if computerValue == ROCK {
-				g.computerWins()
-			} else {
-				g.playerWins()
-			}
-		default:
-
-			g.DisplayChan <- "Invalid choise"
-			<-g.DisplayChan
-			return false
-		}
+		g.computerWins()
 	}
+
+	// else {
+	// 	switch playerValue {
+	// 	case ROCK:
+	// 		if computerValue == PAPER {
+	// 			g.computerWins()
+	// 		} else {
+	// 			g.playerWins()
+	// 		}
+	// 	case PAPER:
+	// 		if computerValue == SCISSORS {
+	// 			g.computerWins()
+	// 		} else {
+	// 			g.playerWins()
+	// 		}
+	// 	case SCISSORS:
+	// 		if computerValue == ROCK {
+	// 			g.computerWins()
+	// 		} else {
+	// 			g.playerWins()
+	// 		}
+	// 	default:
+
+	// 		g.DisplayChan <- "Invalid choise"
+	// 		<-g.DisplayChan
+	// 		return false
+	// 	}
+	// }
 	return true
 }
 
